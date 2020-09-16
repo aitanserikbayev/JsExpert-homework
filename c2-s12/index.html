@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>JS/Expert Example</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+	<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+	<div class="wrapper">
+		<div class="container">
+			<h1>Галерея</h1>
+
+			<form>
+				<div class="form-row">
+					<div class="form-group col-md-3">
+						<label for="buildType">Тип построения</label>
+						<select class="form-control" id="buildType">
+							<option value="0" selected disabled>Выберите один из вариантов</option>
+							<option value="1">Использовать replace</option>
+							<option value="2">Использовать шаблонные строки</option>
+							<option value="3">Использовать createElement</option>
+						</select>
+					</div>
+					<div class="form-group col-md-3">
+						<label for="count">Количество</label>
+						<select id="count" class="form-control count-selector">
+							<option value="all" selected>Все</option>
+							<option value="3">Три картинки</option>
+							<option value="6">Шесть картинок</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<button type="submit" id="play" class="btn btn-primary">Построить галерею</button>
+				</div>
+			</form>
+
+			<h4 id="buildTitle"></h4>
+
+			<div id="content">
+
+			</div>
+		</div>
+	</div>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.28.0/moment.min.js"></script>
+	<script src="js/data.js"></script>
+	<script src="js/main.js"></script>
+</body>
+</html>

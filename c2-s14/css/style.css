@@ -1,0 +1,11 @@
+body {
+    overflow-y: scroll;
+}
+
+.wrapper {
+    padding: 100px;
+}
+
+.card {
+    margin-bottom: 30px;
+}

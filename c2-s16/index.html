@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <title>Форма входа</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+    <h5 class="my-0 mr-md-auto font-weight-normal">JSExpert</h5>
+    <nav class="my-2 my-md-0 mr-md-3">
+        <a class="p-2 text-dark" href="#">Главная</a>
+        <a class="p-2 text-dark" href="#">Галлерея</a>
+        <a class="p-2 text-dark" href="#">О компании</a>
+        <a class="p-2 text-dark" href="#">Курсы</a>
+    </nav>
+    <a class="btn btn-outline-primary" href="#">Войти</a>
+</div>
+
+<main class="text-center" role="main">
+    <div id="authorization">
+        <div id="messages" class="text-left"></div>
+        <form class="form-signin">
+            <h1 class="h3 mb-3 font-weight-normal">Авторизация</h1>
+            <label for="inputEmail" class="sr-only">Email</label>
+            <input type="email" id="inputEmail" class="form-control" placeholder="Email" required autofocus>
+            <label for="inputPassword" class="sr-only">Пароль</label>
+            <input type="password" id="inputPassword" class="form-control" placeholder="Пароль" required>
+            <button class="btn btn-lg btn-primary btn-block" type="submit" id="submit">Войти</button>
+            <p class="mt-5 mb-3 text-muted">&copy; 2017-2020</p>
+        </form>
+    </div>
+    <div id="profile" class="profile d-none">
+        <div class="container text-left">
+            <h2 class="font-weight-normal">Инфорамация о пользователе</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="profileEmail">Email</label>
+                        <input type="email" value="admin@test.com" class="form-control" id="profileEmail" disabled>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="profilePassword">Password</label>
+                        <div class="input-group">
+                            <input type="password" value="passWORD2020" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="button-addon" id="profilePassword" disabled>
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" id="passwordToggleBtn" data-alternative-title="Скрыть пароль">Показать пароль</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <a href="#" title="Вернуться назад" class="btn btn-primary" id="back">Вернуться назад</a>
+        </div>
+    </div>
+</main>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.28.0/moment.min.js" integrity="sha512-Q1f3TS3vSt1jQ8AwP2OuenztnLU6LwxgyyYOG1jgMW/cbEMHps/3wjvnl1P3WTrF3chJUWEoxDUEjMxDV8pujg==" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+<script src=js/data.js></script>
+<script src=js/main.js></script>
+</body>
+</html>
+

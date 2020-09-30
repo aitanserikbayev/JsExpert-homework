@@ -1,4 +1,4 @@
-const allErrorMessages = {
+const errorMessagesList = {
   requiredEmail: 'Поле Email обязательно для заполнения',
   invalidEmail: 'Введите корректный Email',
   requiredPassword: 'Поле Password обязательно для заполнения',

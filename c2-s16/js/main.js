@@ -1,110 +1,94 @@
-const app = (function () {
-  const access = {
-    login: 'admin@test.com',
-    password: 'passWORD2020'
-  };
-  let loginInput = document.querySelector('#inputEmail'),
-    passwordInput = document.querySelector('#inputPassword'),
-    submitBtn = document.querySelector('#submit'),
-    backBtn = document.querySelector('#back'),
-    passwordToggleBtn = document.querySelector('#passwordToggleBtn'),
-    messagesContainer = document.querySelector('#messages'),
-    authorizationBlock = document.querySelector('#authorization'),
-    profileBlock = document.querySelector('#profile'),
-    errorMessages = {};
+const access = {
+  login: 'admin@test.com',
+  password: 'passWORD2020'
+};
 
-  function isValidEmail(email) {
-    if (!!email) {
-      const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return re.test(String(email).toLowerCase());
-    } else {
+let authorizationInitParams = {
+  loginInput: document.querySelector('#inputEmail'),
+  passwordInput: document.querySelector('#inputPassword'),
+  submitBtn: document.querySelector('#submit'),
+  backBtn: document.querySelector('#back'),
+  passwordToggleBtn: document.querySelector('#passwordToggleBtn'),
+  messagesContainer: document.querySelector('#messages'),
+  profilePasswordInput: document.querySelector('#profilePassword'),
+  errorMessagesList: errorMessagesList
+};
+
+const authorization = (function (params) {
+  let {
+      loginInput,
+      passwordInput,
+      submitBtn,
+      backBtn,
+      passwordToggleBtn,
+      messagesContainer,
+      profilePasswordInput,
+      errorMessagesList
+    } = params,
+    errorMessages = [];
+
+  const passwordRe = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/,
+    loginRe = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+  function isFieldFilled(input, errorKey) {
+    if (input) {
       return true
+    } else {
+      errorMessages.push(errorMessagesList[errorKey]);
+      return false
     }
   }
 
-  function isValidPassword(password) {
-    if (!!password) {
-      const re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
-      return re.test(String(password));
-    } else {
+  function isFieldValid(input, errorKey, re) {
+    if (re.test(String(input))) {
       return true
-    }
-  }
-
-  function togglePasswordType() {
-    let input = document.querySelector('#profilePassword'),
-        btn = this,
-        btnTitle = btn.innerText,
-        btnAlternativeTitle = btn.getAttribute('data-alternative-title');
-    if (input.getAttribute('type') === 'password') {
-      input.setAttribute('type', 'text');
     } else {
-      input.setAttribute('type', 'password');
+      errorMessages.push(errorMessagesList[errorKey]);
+      return false
     }
-    btn.innerText = btnAlternativeTitle;
-    btn.setAttribute('data-alternative-title', btnTitle);
   }
 
-  function addErrorMessage(key) {
-    errorMessages[key] = allErrorMessages[key];
+  function isFormValid(loginValue, passwordValue) {
+    return isFieldFilled(loginValue, 'requiredEmail')
+      && isFieldFilled(passwordValue, 'requiredPassword')
+      && isFieldValid(loginValue, 'invalidEmail', loginRe)
+      && isFieldValid(passwordValue, 'invalidPassword', passwordRe);
   }
 
-  function removeErrorMessage(key) {
-    delete errorMessages[key];
+  function isFieldApproved(input, errorKey, compareField) {
+    if (input === compareField) {
+      return true
+    } else {
+      errorMessages.push(errorMessagesList[errorKey]);
+      return false
+    }
   }
 
-  function toggleErrorMessage(isValid, messageKey) {
-    isValid ? removeErrorMessage(messageKey) : addErrorMessage(messageKey);
+  function isFormApproved(loginValue, passwordValue) {
+    return isFieldApproved(loginValue, 'wrongLogin', localStorage.getItem('login'))
+      && isFieldApproved(passwordValue, 'wrongPassword', localStorage.getItem('password'))
+  }
+
+  function clearMessages() {
+    errorMessages = [];
+    messagesContainer.innerHTML = '';
+  }
+
+  function showTab(tabId) {
+    let tabEl = document.querySelector(tabId),
+      siblings = tabEl.parentElement.children;
+    for (let key in siblings) {
+      if (siblings.hasOwnProperty(key)) {
+        siblings[key].classList.add('d-none');
+      }
+    }
+    tabEl.classList.remove('d-none');
   }
 
   function renderMessages() {
     let html = '';
-    for (let key in errorMessages) {
-      html += `<li>${errorMessages[key]}</li>`
-    }
-    messagesContainer.innerHTML = html ? `<div class="alert alert-danger" role="alert"><ul>${html}</ul></div>` : '';
-  }
-
-  function clearMessages() {
-    errorMessages = {};
-    messagesContainer.innerHTML = '';
-  }
-
-  Object.size = function (obj) {
-    let size = 0;
-    for (let key in obj) {
-      if (obj.hasOwnProperty(key)) size++;
-    }
-    return size;
-  };
-
-  function isEqual(a, b) {
-    return a === b
-  }
-
-  function goToProfile() {
-    authorizationBlock.classList.add('d-none');
-    profileBlock.classList.remove('d-none');
-  }
-
-  function goToAuthorization() {
-    profileBlock.classList.add('d-none');
-    authorizationBlock.classList.remove('d-none');
-  }
-
-  function validateForm(loginValue, passwordValue) {
-    clearMessages();
-    toggleErrorMessage(!!loginValue, 'requiredEmail');
-    toggleErrorMessage(isValidEmail(loginValue), 'invalidEmail');
-    toggleErrorMessage(!!passwordValue, 'requiredPassword');
-    toggleErrorMessage(isValidPassword(passwordValue), 'invalidPassword');
-
-    if (!Object.size(errorMessages)) {
-      toggleErrorMessage(isEqual(loginValue, localStorage.getItem('login')), 'wrongLogin');
-      toggleErrorMessage(isEqual(passwordValue, localStorage.getItem('password')), 'wrongPassword');
-    }
-
-    return !Object.size(errorMessages);
+    errorMessages.forEach(msg => html += `<li>${msg}</li>`);
+    messagesContainer.innerHTML = `<div class="alert alert-danger" role="alert"><ul>${html}</ul></div>`;
   }
 
   function submitForm(e) {
@@ -112,15 +96,28 @@ const app = (function () {
     let loginValue = loginInput.value,
       passwordValue = passwordInput.value;
 
-    if (validateForm(loginValue, passwordValue)) {
-      clearMessages();
-      goToProfile()
+    clearMessages();
+    if (isFormValid(loginValue, passwordValue) && isFormApproved(loginValue, passwordValue)) {
+      showTab('#profile');
     } else {
       renderMessages();
     }
   }
 
-  function setLogAndPass() {
+  function togglePasswordType(e) {
+    let btn = e.target,
+      btnTitle = btn.innerText,
+      btnAlternativeTitle = btn.getAttribute('data-alternative-title');
+    if (profilePasswordInput.getAttribute('type') === 'password') {
+      profilePasswordInput.setAttribute('type', 'text');
+    } else {
+      profilePasswordInput.setAttribute('type', 'password');
+    }
+    btn.innerText = btnAlternativeTitle;
+    btn.setAttribute('data-alternative-title', btnTitle);
+  }
+
+  function setLogAndPass(access) {
     for (let key in access) {
       localStorage.setItem(key, access[key]);
     }
@@ -128,14 +125,14 @@ const app = (function () {
 
   function initComponent() {
     submitBtn.addEventListener('click', submitForm);
-    backBtn.addEventListener('click', goToAuthorization);
+    backBtn.addEventListener('click', () => showTab('#authorization'));
     passwordToggleBtn.addEventListener('click', togglePasswordType);
   }
 
   return {
     setLogAndPass, initComponent
   }
-})();
+})(authorizationInitParams);
 
-app.setLogAndPass();
-app.initComponent();
+authorization.setLogAndPass(access);
+authorization.initComponent();

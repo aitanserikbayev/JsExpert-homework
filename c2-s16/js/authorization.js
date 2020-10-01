@@ -1,13 +1,15 @@
-const authorization = (function () {
-  let loginInput,
+function Validator(params) {
+  const {
+    loginInput,
     passwordInput,
     submitBtn,
     backBtn,
     passwordToggleBtn,
     messagesContainer,
     profilePasswordInput,
-    errorMessagesList,
-    errorMessages = [];
+    errorMessagesList
+  } = params;
+  let errorMessages = [];
 
   const passwordRe = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/,
     loginRe = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -99,30 +101,15 @@ const authorization = (function () {
     btn.setAttribute('data-alternative-title', btnTitle);
   }
 
-  function setInitParams(params) {
-    loginInput = params.loginInput;
-    passwordInput = params.passwordInput;
-    submitBtn = params.submitBtn;
-    backBtn = params.backBtn;
-    passwordToggleBtn = params.passwordToggleBtn;
-    messagesContainer = params.messagesContainer;
-    profilePasswordInput = params.profilePasswordInput;
-    errorMessagesList = params.errorMessagesList;
-  }
-
-  function setLogAndPass(access) {
+  this.setLogAndPass = (access) => {
     for (let key in access) {
       localStorage.setItem(key, access[key]);
     }
-  }
+  };
 
-  function initComponent() {
+  this.initComponent = () => {
     submitBtn.addEventListener('click', submitForm);
     backBtn.addEventListener('click', () => showTab('#authorization'));
     passwordToggleBtn.addEventListener('click', togglePasswordType);
-  }
-
-  return {
-    setInitParams, setLogAndPass, initComponent
-  }
-})();
+  };
+}

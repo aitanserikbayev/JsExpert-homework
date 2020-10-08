@@ -1,10 +1,13 @@
-/* 
-*  Схема инициализации приложения
-*/
-
-let authorizationInitParams = {
+let validationInitParams = {
   messagesContainer: document.querySelector('#messages'),
   errorMessagesList: errorMessagesList
+};
+
+let galleryInitParams = {
+  addBtn: document.querySelector("#add"),
+  countLabel: document.querySelector('#count'),
+  sortSelect: document.querySelector('#sort'),
+  container: document.querySelector('#content')
 };
 
 let loginFormParams = {
@@ -15,20 +18,39 @@ let loginFormParams = {
   navBar: document.querySelector('#menu'),
   logoutBtn: document.querySelector('#logout'),
   loginBtn: document.querySelector('#submit'),
+  roleContainer: document.querySelector('#role'),
   showPasswordText: 'Показать пароль',
   hidePasswordText: 'Скрыть пароль',
   galleryTab: '#gallery',
-  authorizationTab: '#authorization',
-  access: {
-    login: 'admin@test.com',
-    password: 'passWORD2020'
-  }
+  authorizationTab: '#authorization'
 };
 
-let validatorModule = new Validator(authorizationInitParams);
+let access = [
+  {
+    login: 'admin@test.com',
+    password: 'Admin2020',
+    role: 'adminRole'
+  },
+  {
+    login: 'manager@test.com',
+    password: 'Manager2020',
+    role: 'managerRole'
+  },
+  {
+    login: 'tester@test.com',
+    password: 'Tester2020',
+    role: 'testerRole'
+  }
+];
 
-let galleryModule = new BaseGallery();
-// let galleryModule = new ExtendedGallery();
+let dummyService = new DummyService();
+
+let validatorModule = new Validator(validationInitParams);
+
+// let galleryModule = new BaseGallery(galleryInitParams);
+let galleryModule = new ExtendedGallery();
 
 let loginForm = new LoginForm(validatorModule, galleryModule, loginFormParams);
+
+dummyService.setLogAndPass(access);
 loginForm.initComponent();

@@ -1,96 +1,51 @@
-/* 
-*  Схематическое изображение класса Галереи
-*/
-
 let BaseGallery = function () {
-  const addBtn = document.querySelector("#add"),
-    countLabel = document.querySelector('#count'),
-    sortSelect = document.querySelector('#sort'),
-    container = document.querySelector('#content');
-  let currentData = [];
+  this.addBtn = document.querySelector("#add");
+  this.countLabel = document.querySelector('#count');
+  this.sortSelect = document.querySelector('#sort');
+  this.container = document.querySelector('#content');
+  this.currentData = [];
+};
 
-  function addAndUpdate(e) {
-    e.preventDefault();
+BaseGallery.prototype = {
+  initComponent: function () {
+    this.checkLocalSortType();
+    this.checkSavedCurrentData();
+    this.initListeners();
+  },
 
-    //Add Item
-    addItem(data);
-
-    //Save currentData to localStorage
-    saveDataToLocalStorage();
-
-    //Sort Items;
-    sortData(sortSelect.value);
-
-    //Render Data
-    renderData(currentData);
-
-    //Count
-    updateCounter();
-  }
-
-  function removeAndUpdate(e) {
-    if (e.target.classList.contains('btn-danger')) {
-      currentData = currentData.filter(item => {
-        return item.id !== Number(e.target.closest('[key]').getAttribute('key'));
-      });
-
-      saveDataToLocalStorage();
-
-      renderData();
-
-      enableBtn(addBtn);
-
-      updateCounter();
-    }
-  }
-
-  function sortAndUpdate(e) {
+  sortAndUpdate: function (e) {
     let sortType = e.target.value;
 
     localStorage.setItem('sort', sortType);
 
-    sortData(sortType);
+    this.sortData(sortType);
 
-    renderData();
-  }
+    this.renderData();
+  },
 
-  function addItem(data) {
-    let index = data.findIndex(item => !currentData.some(item2 => item.id === item2.id));
-    if (index !== -1) {
-      currentData.push(data[index]);
-    } else {
-      $('#finishMsg').modal('show');
-      disableBtn(addBtn);
-    }
-  }
-
-  function saveDataToLocalStorage() {
-    localStorage.setItem('currentData', JSON.stringify(currentData));
-  }
-
-  function sortData(sortType) {
+  sortData: function (sortType) {
     switch (sortType) {
       case "nameAsc":
-        sortByName(currentData, 1);
+        this.sortByName(this.currentData, 1);
         break;
       case "nameDesc":
-        sortByName(currentData, -1);
+        this.sortByName(this.currentData, -1);
         break;
       case "dateAsc":
-        sortByDate(currentData, 1);
+        this.sortByDate(this.currentData, 1);
         break;
       case "dateDesc":
-        sortByDate(currentData, -1);
+        this.sortByDate(this.currentData, -1);
         break;
       default:
         return false
     }
-  }
+  },
 
-  function renderData() {
+  renderData: function () {
     let html = '';
 
-    currentData.forEach((item) => {
+    this.currentData.forEach((item) => {
       html += `<div class="col-md-3" key="${item.id}">
                   <div class="card">
                     <img src="${item.url}" class="card-img-top" alt="${item.name}">
@@ -104,10 +59,10 @@ let BaseGallery = function () {
                </div>`;
     });
 
-    container.innerHTML = `<div class="row">${html}</div>`;
-  }
+    this.container.innerHTML = `<div class="row">${html}</div>`;
+  },
 
-  function sortByName(data, direction) {
+  sortByName: function (data, direction) {
     data.sort((a, b) => {
       let aName = a.name.toLowerCase(),
         bName = b.name.toLowerCase();
@@ -119,9 +74,9 @@ let BaseGallery = function () {
       }
       return 0
     });
-  }
+  },
 
-  function sortByDate(data, direction) {
+  sortByDate: function (data, direction) {
     data.sort((a, b) => {
       if (a.date > b.date) {
         return direction
@@ -131,79 +86,112 @@ let BaseGallery = function () {
       }
       return 0
     });
-  }
+  },
 
-  function enableBtn(btn) {
+  checkLocalSortType: function () {
+    if (localStorage.getItem('sort')) {
+      this.sortSelect.value = localStorage.getItem('sort');
+    }
+  },
+
+  checkSavedCurrentData: function () {
+    let savedCurrentData = localStorage.getItem('currentData');
+    if (savedCurrentData) {
+      this.currentData = JSON.parse(savedCurrentData);
+      this.sortData(this.sortSelect.value);
+      this.renderData(this.currentData);
+    }
+  },
+
+  initListeners: function () {
+    //Sort select
+    this.sortSelect.addEventListener('change', this.sortAndUpdate.bind(this));
+  }
+};
+
+let ExtendedGallery = function () {
+  BaseGallery.apply(this);
+};
+
+ExtendedGallery.prototype = {
+
+  initComponent: function () {
+    BaseGallery.prototype.initComponent.apply(this);
+
+    this.updateCounter();
+    this.initExtListeners();
+  },
+
+  addAndUpdate: function (e) {
+    e.preventDefault();
+
+    //Add Item
+    this.addItem(data);
+
+    //Save currentData to localStorage
+    this.saveDataToLocalStorage();
+
+    //Sort Items;
+    this.sortData(this.sortSelect.value);
+
+    //Render Data
+    this.renderData(this.currentData);
+
+    //Count
+    this.updateCounter();
+  },
+
+  removeAndUpdate: function (e) {
+    if (e.target.classList.contains('btn-danger')) {
+      this.currentData = this.currentData.filter(item => {
+        return item.id !== Number(e.target.closest('[key]').getAttribute('key'));
+      });
+
+      this.saveDataToLocalStorage();
+
+      this.renderData();
+
+      this.enableBtn(this.addBtn);
+
+      this.updateCounter();
+    }
+  },
+
+  addItem: function (data) {
+    let index = data.findIndex(item => !this.currentData.some(item2 => item.id === item2.id));
+    if (index !== -1) {
+      this.currentData.push(data[index]);
+    } else {
+      $('#finishMsg').modal('show');
+      this.disableBtn(this.addBtn);
+    }
+  },
+
+  saveDataToLocalStorage: function () {
+    localStorage.setItem('currentData', JSON.stringify(this.currentData));
+  },
+
+  enableBtn: function (btn) {
     if (btn.getAttribute('disabled') === 'disabled') {
       btn.removeAttribute('disabled');
     }
-  }
+  },
 
-  function disableBtn(btn) {
+  disableBtn: function (btn) {
     btn.setAttribute('disabled', 'disabled');
-  }
+  },
 
-  function updateCounter() {
-    countLabel.innerText = data.length - currentData.length;
-  }
+  updateCounter: function () {
+    this.countLabel.innerText = data.length - this.currentData.length;
+  },
 
-  this.checkLocalSortType = () => {
-    if (localStorage.getItem('sort')) {
-      sortSelect.value = localStorage.getItem('sort');
-    }
-  };
-
-  this.checkSavedCurrentData = () => {
-    let savedCurrentData = localStorage.getItem('currentData');
-    if (savedCurrentData) {
-      currentData = JSON.parse(savedCurrentData);
-      sortData(sortSelect.value);
-      renderData(currentData);
-    }
-  };
-
-  this.updateCounter = () => {
-    updateCounter();
-  };
-
-  this.initListeners = () => {
+  initExtListeners: function () {
     //Add button
-    addBtn.addEventListener("click", addAndUpdate);
+    this.addBtn.addEventListener("click", this.addAndUpdate.bind(this));
 
     //Remove button
-    container.addEventListener("click", removeAndUpdate);
-
-    //Sort select
-    sortSelect.addEventListener('change', sortAndUpdate);
-  };
-};
-
-BaseGallery.prototype = {
-  initComponent: function () {
-    this.checkLocalSortType();
-    this.checkSavedCurrentData();
-    this.updateCounter();
-    this.initListeners();
+    this.container.addEventListener("click", this.removeAndUpdate.bind(this));
   }
 };
 
-
-// let ExtendedGallery = function () {
-//   BaseGallery.apply(this);
-//   this.property = {};
-// };
-//
-// ExtendedGallery.prototype = {
-//
-//   initComponent: function () {
-//     BaseGallery.prototype.initComponent.apply(this);
-//   },
-//
-//   addImage: function () {
-//     // новый метод которо нет у родителя
-//   }
-// };
-
-// код функции наследования можно найти архиве, который содержится 
-// в материалах к сессии 29 (практический пример)
-// service.inheritance(BaseGallery, ExtendedGallery);
+service.inheritance(BaseGallery, ExtendedGallery);

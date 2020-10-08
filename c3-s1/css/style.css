@@ -104,6 +104,11 @@ nav.menu .active {
   color: #007bff !important;
 }
 
+.role {
+  margin-right: 30px;
+  font-style: italic;
+}
+
 /* 
 
 .navbar {

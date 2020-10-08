@@ -1,17 +1,4 @@
-const errorMessagesList = {
-  requiredEmail: 'Поле Email обязательно для заполнения',
-  invalidEmail: 'Введите корректный Email',
-  requiredPassword: 'Поле Password обязательно для заполнения',
-  invalidPassword: 'Введите корректный пароль:<br/>' +
-    '- Пароль должен содержать минимум одну цифру<br/>' +
-    '- Пароль должен содержать минимум одну прописную букву<br/>' +
-    '- Пароль должен содержать минимум одну заглавную букву<br/>' +
-    '- Пароль должен быть не короче 8 символов',
-  wrongLogin: 'Введен неверный Email',
-  wrongPassword: 'Введен неверный пароль'
-};
-
-let apiData = [{
+const apiData = [{
   url: "desktopwallpapers.org.ua/mini/201507/40069.jpg",
   name: "CHEVROLET",
   id : 1,
@@ -113,7 +100,7 @@ let apiData = [{
   date : 1322159200637
 }];
 
-let data = transformData(apiData);
+const data = transformData(apiData);
 
 function transformData(data) {
   return (
@@ -128,3 +115,16 @@ function transformData(data) {
     })
   )
 }
+
+const errorMessagesList = {
+  requiredEmail: 'Поле Email обязательно для заполнения',
+  invalidEmail: 'Введите корректный Email',
+  requiredPassword: 'Поле Password обязательно для заполнения',
+  invalidPassword: 'Введите корректный пароль:<br/>' +
+    '- Пароль должен содержать минимум одну цифру<br/>' +
+    '- Пароль должен содержать минимум одну прописную букву<br/>' +
+    '- Пароль должен содержать минимум одну заглавную букву<br/>' +
+    '- Пароль должен быть не короче 8 символов',
+  wrongLogin: 'Введен неверный Email',
+  wrongPassword: 'Введен неверный пароль'
+};

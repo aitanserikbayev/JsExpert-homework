@@ -1,4 +1,5 @@
-function Validator(params) {
+let Validator = function (params) {
+  this.userRole = '';
   const {
     messagesContainer,
     errorMessagesList
@@ -33,18 +34,22 @@ function Validator(params) {
       && isFieldValid(passwordValue, 'invalidPassword', passwordRe);
   };
 
-  const isFieldApproved = (input, errorKey, compareField) => {
-    if (input === compareField) {
-      return true
+  const isFormApproved = (loginValue, passwordValue) => {
+    let accessData = JSON.parse(localStorage.getItem('access'));
+    if (accessData.some(item => item.login === loginValue)) {
+      let correctData = accessData.find(item => item.login === loginValue);
+
+      if (correctData.password === passwordValue) {
+        this.userRole = correctData.role;
+        return true;
+      } else {
+        errorMessages.push(errorMessagesList['wrongPassword']);
+        return false
+      }
     } else {
-      errorMessages.push(errorMessagesList[errorKey]);
+      errorMessages.push(errorMessagesList['wrongLogin']);
       return false
     }
-  };
-
-  const isFormApproved = (loginValue, passwordValue) => {
-    return isFieldApproved(loginValue, 'wrongLogin', localStorage.getItem('login'))
-      && isFieldApproved(passwordValue, 'wrongPassword', localStorage.getItem('password'))
   };
 
   const clearMessages = () => {
@@ -56,6 +61,10 @@ function Validator(params) {
     let html = '';
     errorMessages.forEach(msg => html += `<li>${msg}</li>`);
     messagesContainer.innerHTML = `<div class="alert alert-danger" role="alert"><ul>${html}</ul></div>`;
+  };
+
+  this.getRole = () => {
+    return this.userRole;
   };
 
   this.submitForm = (loginInput, passwordInput) => {
@@ -73,10 +82,4 @@ function Validator(params) {
       return false;
     }
   };
-
-  this.setLogAndPass = (access) => {
-    for (let key in access) {
-      localStorage.setItem(key, access[key]);
-    }
-  };
-}
+};

@@ -3,13 +3,6 @@ let validationInitParams = {
   errorMessagesList: errorMessagesList
 };
 
-let galleryInitParams = {
-  addBtn: document.querySelector("#add"),
-  countLabel: document.querySelector('#count'),
-  sortSelect: document.querySelector('#sort'),
-  container: document.querySelector('#content')
-};
-
 let loginFormParams = {
   loginInput: document.querySelector('#inputEmail'),
   passwordInput: document.querySelector('#inputPassword'),
@@ -48,9 +41,8 @@ let dummyService = new DummyService();
 let validatorModule = new Validator(validationInitParams);
 
 // let galleryModule = new BaseGallery(galleryInitParams);
-let galleryModule = new ExtendedGallery();
 
-let loginForm = new LoginForm(validatorModule, galleryModule, loginFormParams);
+let loginForm = new LoginForm(validatorModule, loginFormParams);
 
 dummyService.setLogAndPass(access);
 loginForm.initComponent();

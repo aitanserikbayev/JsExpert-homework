@@ -1,6 +1,5 @@
-let LoginForm = function (validatorModule, galleryModule, initParams) {
+let LoginForm = function (validatorModule, initParams) {
   this.validator = validatorModule;
-  this.gallery = galleryModule;
   this.navBar = initParams.navBar;
   this.loginBtn = initParams.loginBtn;
   this.logoutBtn = initParams.logoutBtn;
@@ -14,6 +13,7 @@ let LoginForm = function (validatorModule, galleryModule, initParams) {
   this.authorizationTab = initParams.authorizationTab;
   this.roleContainer = initParams.roleContainer;
   this.isLoggedIn = !!localStorage.getItem('isLoggedIn');
+  this.galleryModule = null;
 };
 
 LoginForm.prototype = {
@@ -32,7 +32,12 @@ LoginForm.prototype = {
   },
 
   showGallery: function () {
-    this.gallery.initComponent();
+    this.galleryModule = new ExtendedGallery();
+    this.galleryModule.initComponent();
+  },
+
+  deleteGallery: function () {
+    this.galleryModule = null;
   },
 
   objToArray: function (obj) {
@@ -64,12 +69,8 @@ LoginForm.prototype = {
     this.removeClass(tabEl, 'd-none');
   },
 
-  highlightLink: function () {
-    let wrapper = document.querySelector('main'),
-      tabs = this.objToArray(wrapper.children),
-      activeBlock = tabs.find((item) => !item.classList.contains('d-none')),
-      activeBlockId = activeBlock.getAttribute('id'),
-      activeLink = document.querySelector(`[href="#${activeBlockId}"]`),
+  highlightLink: function (tabId) {
+    let activeLink = document.querySelector(`[href="${tabId}"]`),
       links = this.objToArray(this.navBar.children);
 
     this.operateHighlightLink(links, activeLink);
@@ -81,7 +82,7 @@ LoginForm.prototype = {
 
     this.operateShowTab(tabElements, tabEl);
 
-    this.highlightLink();
+    this.highlightLink(tabId);
   },
 
   showLoggedInElements: function () {
@@ -109,7 +110,7 @@ LoginForm.prototype = {
       this.showTab(this.galleryTab);
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('role', this.getRole());
-      this.roleContainer.innerHTML = localStorage.getItem('role');
+      this.roleContainer.innerHTML = this.getRole();
       this.showLoggedInElements();
       this.showGallery();
     }
@@ -122,6 +123,7 @@ LoginForm.prototype = {
     localStorage.setItem('role', '');
     this.roleContainer.innerHTML = '';
     this.hideLoggedInElements();
+    this.deleteGallery();
   },
 
   authInitCheck: function () {

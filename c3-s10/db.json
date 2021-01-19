@@ -1,0 +1,106 @@
+{
+  "cars": [
+    {
+      "id": 1,
+      "url": "http://desktopwallpapers.org.ua/mini/201507/40069.jpg",
+      "name": "CHEVROLET",
+      "description": "Lorem ipsum dolor sit ame...",
+      "date": 1422153200637
+    },
+    {
+      "id": 2,
+      "url": "http://desktopwallpapers.org.ua/mini/201507/40068.jpg",
+      "name": "DEWOO",
+      "description": "Lorem ipsum dolor sit ame...",
+      "date": 1421153200637
+    },
+    {
+      "id": 3,
+      "url": "http://desktopwallpapers.org.ua/mini/201507/40067.jpg",
+      "name": "FOLKSWAGEN",
+      "description": "Lorem ipsum dolor sit ame...",
+      "date": 1426153200637
+    },
+    {
+      "id": 4,
+      "url": "http://desktopwallpapers.org.ua/mini/201507/40057.jpg",
+      "name": "FERRARI",
+      "description": "Lorem ipsum dolor sit ame...",
+      "date": 1428153200637
+    },
+    {
+      "id": 5,
+      "url": "http://desktopwallpapers.org.ua/mini/201507/40066.jpg",
+      "name": "BMW",
+      "description": "Lorem ipsum dolor sit ame...",
+      "date": 1402153200637
+    },
+    {
+      "id": 6,
+      "url": "http://desktopwallpapers.org.ua/mini/201507/40064.jpg",
+      "name": "MERCEDESS",
+      "description": "Lorem ipsum dolor sit ame...",
+      "date": 1442153200637
+    },
+    {
+      "id": 7,
+      "url": "http://desktopwallpapers.org.ua/mini/201507/40063.jpg",
+      "name": "SKODA",
+      "description": "Lorem ipsum dolor sit ame...",
+      "date": 1482153200637
+    },
+    {
+      "id": 8,
+      "url": "http://desktopwallpapers.org.ua/mini/201507/40062.jpg",
+      "name": "FORD",
+      "description": "Lorem ipsum dolor sit ame...",
+      "date": 1442153200637
+    },
+    {
+      "id": 9,
+      "url": "http://desktopwallpapers.org.ua/mini/201507/40059.jpg",
+      "name": "TOYOTA",
+      "description": "Lorem ipsum dolor sit ame...",
+      "date": 1322153200637
+    },
+    {
+      "id": 10,
+      "url": "http://desktopwallpapers.org.ua/mini/201507/40058.jpg",
+      "name": "RENAULT",
+      "description": "Lorem ipsum dolor sit ame...",
+      "date": 1322159200637
+    },
+    {
+      "id": 11,
+      "url": "https://static.dw.com/image/51362527_401.jpg",
+      "name": "Tesla",
+      "description": "Tesla CyberTruck",
+      "date": 1610962103243
+    }
+  ],
+  "errorMessagesList": {
+    "requiredEmail": "Поле Email обязательно для заполнения",
+    "invalidEmail": "Введите корректный Email",
+    "requiredPassword": "Поле Password обязательно для заполнения",
+    "invalidPassword": "Введите корректный пароль:<br/>- Пароль должен содержать минимум одну цифру<br/>- Пароль должен содержать минимум одну прописную букву<br/>- Пароль должен содержать минимум одну заглавную букву<br/>- Пароль должен быть не короче 8 символов",
+    "wrongLogin": "Введен неверный Email",
+    "wrongPassword": "Введен неверный пароль"
+  },
+  "access": [
+    {
+      "login": "admin@test.com",
+      "password": "Admin2020",
+      "role": "adminRole"
+    },
+    {
+      "login": "manager@test.com",
+      "password": "Manager2020",
+      "role": "managerRole"
+    },
+    {
+      "login": "tester@test.com",
+      "password": "Tester2020",
+      "role": "testerRole"
+    }
+  ]
+}
